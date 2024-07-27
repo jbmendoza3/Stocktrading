@@ -1,23 +1,23 @@
-<h1>All Users</h1>
-
-<% if user_signed_in? %>
-    <%= button_to 'Logout', destroy_user_session_path, method: :delete %>
-<% end %>
-
-
+<h1>Users</h1>
+<%= link_to 'New User', new_admin_user_path %>
 <table>
   <thead>
     <tr>
       <th>Email</th>
       <th>User Type</th>
+      <th>Actions</th>
     </tr>
   </thead>
+
   <tbody>
     <% @users.each do |user| %>
       <tr>
         <td><%= user.email %></td>
         <td><%= user.user_type %></td>
+        <td><%= link_to 'Details', admin_user_path(user) %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
+
+
