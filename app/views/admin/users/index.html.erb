@@ -1,0 +1,23 @@
+<h1>All Users</h1>
+
+<% if user_signed_in? %>
+    <%= button_to 'Logout', destroy_user_session_path, method: :delete %>
+<% end %>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>User Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td><%= user.user_type %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
