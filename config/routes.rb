@@ -6,7 +6,12 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   namespace :admin do
-    resources :users
+    resources :users do
+      collection do
+        get 'pending_users'
+        patch 'approve_user'
+      end
+    end
   end
 
   namespace :trader do

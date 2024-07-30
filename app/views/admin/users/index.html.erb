@@ -1,7 +1,10 @@
-<h1>Users</h1>
+<h1>Welcome Admin!</h1>
+
 <%= button_to 'Logout', destroy_user_session_path, method: :delete %>
+
+<h2>Users</h2>
 <%= link_to 'New User', new_admin_user_path %><br>
-<%= link_to 'Pending Users', new_admin_user_path %>
+<%= link_to 'Pending Users', pending_users_admin_users_path	 %>
 <table>
   <thead>
     <tr>

@@ -1,0 +1,32 @@
+<%= link_to 'Back to All Users', admin_users_path %>
+<h1>Pending Users</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Creation Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= user.email %></td>
+        <td><%= user.creation_status %></td>
+        <td>
+          <%= form_with url: approve_user_admin_users_path, method: :patch, local: true do |form| %>
+            <%= hidden_field_tag :id, user.id %>
+            <%= hidden_field_tag :status, 'approved' %>
+            <%= submit_tag 'Approve' %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+
+
