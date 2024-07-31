@@ -18,4 +18,9 @@ Rails.application.routes.draw do
     get 'home', to: 'home#index'
   end
 
+  get 'pending_approval', to: 'trader/home#pending_approval'
+  
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
 end
