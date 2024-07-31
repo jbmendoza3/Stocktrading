@@ -58,7 +58,6 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-  gem "letter_opener"
 end
 
 group :test do
@@ -71,3 +70,5 @@ end
 
 gem 'rspec-rails', '~> 4.0', '>= 4.0.1'
 gem "devise", "~> 4.9"
+gem 'letter_opener', group: :development
+gem 'letter_opener_web', group: :development

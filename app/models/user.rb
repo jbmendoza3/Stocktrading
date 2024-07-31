@@ -21,5 +21,9 @@ class User < ApplicationRecord
   def set_default_user_type
     self.user_type ||= 'trader'
   end
+
+  def send_pending_signup_email
+    UserMailer.with(user: self).pending_signup_email.deliver_now
+  end
 end
 

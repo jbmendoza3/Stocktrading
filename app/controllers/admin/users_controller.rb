@@ -45,6 +45,7 @@ class Admin::UsersController < ApplicationController
 
     def approve_user
       if @user.update(creation_status: params[:status])
+        UserMailer.with(user: @user).approval_email.deliver_now if @user.creation_status == 'approved'
         redirect_to pending_users_admin_users_path, notice: 'User status updated successfully.'
       else
         redirect_to pending_users_admin_users_path, alert: 'Failed to update user status.'

@@ -74,21 +74,14 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
   # config.action_mailer.delivery_method = :letter_opener
-  # config.action_mailer.perform_deliveries = true
-
+  
+  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.perform_deliveries = true
   LetterOpener.configure do |config|
-    # To overrider the location for message storage.
-    # Default value is `tmp/letter_opener`
-    config.location = Rails.root.join('tmp', 'my_mails')
-  
-    # To render only the message body, without any metadata or extra containers or styling.
-    # Default value is `:default` that renders styled message with showing useful metadata.
-    config.message_template = :light
-  
-    # To change default file URI scheme you can provide `file_uri_scheme` config.
-    # It might be useful when you use WSL (Windows Subsystem for Linux) and default
-    # scheme doesn't work for you.
-    # Default value is blank
-    config.file_uri_scheme = 'file://///wsl$/Ubuntu-24.04'
+    config.location = Rails.root.join('tmp', 'letter_opener')
+    config.message_template = :default
   end
+
+  config.action_mailer.delivery_method = :letter_opener_web
+  config.action_mailer.perform_deliveries = true
 end
