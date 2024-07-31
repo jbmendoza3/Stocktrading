@@ -1,22 +1,26 @@
 class ApplicationController < ActionController::Base
-    before_action :authenticate_user!
-  
-    private
-  
-    def authorize_admin!
-      authenticate_user!
-      unless current_user&.admin?
-        redirect_to admin_users_path, alert: 'Access denied.'
-      end
+  before_action :authenticate_user!
+
+  private
+
+  def authorize_admin!
+    authenticate_user!
+    unless current_user&.admin?
+      redirect_to admin_users_path, alert: 'Access denied.'
     end
-  
-    def after_sign_in_path_for(resource)
-      if resource.user_type == 'trader'
-        trader_home_path
-      elsif resource.user_type = 'admin'
-        admin_users_path  
-      else
-        root_path
-      end
+  end
+
+  def after_sign_in_path_for(resource)
+    if resource.user_type == 'trader'
+      trader_home_path
+    elsif resource.user_type = 'admin'
+      admin_users_path  
+    else
+      root_path
     end
+  end
+
+  def after_sign_out_path_for(resource_or_scope)
+    new_user_session_path # Redirects to the login page after logout
+  end
 end
