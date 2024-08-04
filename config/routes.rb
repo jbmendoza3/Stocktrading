@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
+  get 'admin/unauthorized'
   devise_for :users
 
   get "up" => "rails/health#show", as: :rails_health_check
 
   namespace :admin do
+    get 'admin/unauthorized', to: 'admin#unauthorized'
     resources :users do
       collection do
         get 'pending_users'

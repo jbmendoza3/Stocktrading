@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   def authorize_admin!
     authenticate_user!
     unless current_user&.admin?
-      redirect_to admin_users_path, alert: 'Access denied.'
+      redirect_to admin_unauthorized_path	, alert: 'Access denied.'
     end
   end
 
@@ -21,6 +21,6 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_out_path_for(resource_or_scope)
-    new_user_session_path # Redirects to the login page after logout
+    new_user_session_path
   end
 end

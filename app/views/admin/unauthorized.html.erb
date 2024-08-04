@@ -1,0 +1,5 @@
+
+<h1>Hello, <%= current_user.email%></h1>
+<h2>You are not authorized to access this page.</h2>
+
+<%= button_to 'Logout', destroy_user_session_path, method: :delete %>
