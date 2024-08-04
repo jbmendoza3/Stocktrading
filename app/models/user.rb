@@ -13,6 +13,9 @@ class User < ApplicationRecord
 
   after_create :send_appropriate_email
 
+  has_many :user_stocks
+  has_many :stocks, through: :user_stocks
+
   def trader?
     user_type == 'trader'
   end

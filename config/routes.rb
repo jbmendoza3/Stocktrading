@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  # root 'home#index'
-
   devise_for :users
 
   get "up" => "rails/health#show", as: :rails_health_check
@@ -19,7 +17,15 @@ Rails.application.routes.draw do
   end
 
   get 'pending_approval', to: 'trader/home#pending_approval'
-  
+
+  resources :stocks, only: [:index]
+  resources :user_stocks, only: [:create] do
+    collection do
+      get 'portfolio'
+    end
+  end
+
+
   if Rails.env.development?
     mount LetterOpenerWeb::Engine, at: "/letter_opener"
   end
