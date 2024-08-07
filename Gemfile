@@ -66,7 +66,7 @@ group :test do
   gem "selenium-webdriver"
   gem 'factory_bot_rails'
   gem 'shoulda-matchers', '~> 5.0'
-
+  gem 'rails-controller-testing'
 end
 
 gem 'rspec-rails', '~> 4.0', '>= 4.0.1'

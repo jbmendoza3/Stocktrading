@@ -12,7 +12,10 @@ Stock.create([
   { name: 'Apple', ticker: 'AAPL', price: 150.0 },
   { name: 'Google', ticker: 'GOOGL', price: 2800.0 },
   { name: 'Amazon', ticker: 'AMZN', price: 3400.0 },
-  { name: 'Microsoft', ticker: 'MSFT', price: 290.0 }
+  { name: 'Microsoft', ticker: 'MSFT', price: 290.0 },
+  { name: 'ABS-CBN Corporation', ticker: 'ABS', price: 200.0 },
+  { name: 'Ayala Land, Inc.', ticker: 'ALI', price: 210.0 },
+  { name: '	GMA Network, Inc.', ticker: 'GMA7', price: 200.0 }
 ])
 
 # Create an admin user for testing if it doesn't already exist

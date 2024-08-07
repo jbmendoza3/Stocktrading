@@ -4,7 +4,7 @@ class Admin::UsersController < ApplicationController
     
   
   def index
-    @users = User.where(creation_status: 'approved')
+    @users = User.where(creation_status: 'approved').where.not(user_type: 'admin')
   end
 
   def show
@@ -29,7 +29,7 @@ class Admin::UsersController < ApplicationController
   
   def update
     if @user.update(user_params)
-      redirect_to admin_users_path, notice: 'User was successfully updated.'
+      redirect_to admin_user_path(@user), notice: 'User was successfully updated.'
     else
       render :edit
     end
@@ -41,7 +41,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def pending_users
-    @users = User.where(creation_status: "pending")
+    @users = User.where(creation_status: "pending").where.not(user_type: 'admin')
   end
 
   def approve_user
@@ -61,6 +61,10 @@ class Admin::UsersController < ApplicationController
   
   def user_params
     params.require(:user).permit(:email, :password, :password_confirmation, :user_type, :creation_status)
+  end
+
+  def authorize_admin!
+    redirect_to admin_unauthorized_path unless current_user.admin?
   end
 
 end
