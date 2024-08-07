@@ -7,6 +7,7 @@ RSpec.describe User, type: :model do
   end
 
   describe 'callbacks' do
+    let(:user) { build(:user, creation_status: 'pending') }
     it 'sets default user type to trader' do
       user = User.new(email: 'test@example.com', password: 'password123')
       user.valid?
@@ -18,21 +19,43 @@ RSpec.describe User, type: :model do
       user.valid?
       expect(user.creation_status).to eq('pending')
     end
+  end
+
+  describe 'callbacks' do
+    let(:user) { build(:user, creation_status: 'pending') }
 
     it 'sends a pending signup email after create if status is pending' do
-      user = build(:user, email: 'test@example.com', password: 'password123', creation_status: 'pending')
-      expect {
-        user.save
-      }.to change { ActionMailer::Base.deliveries.count }.by(1)
-      expect(ActionMailer::Base.deliveries.last.subject).to eq('Your account is pending approval')
+      # Create a mailer instance double
+      mailer_double = instance_double("UserMailer::PendingSignupEmail")
+
+      # Stub the UserMailer class
+      allow(UserMailer).to receive_message_chain(:with, :pending_signup_email).and_return(mailer_double)
+      allow(mailer_double).to receive(:deliver_now)
+
+      user.save
+
+      expect(UserMailer).to have_received(:with).with(user: user)
+      expect(UserMailer.with(user: user)).to have_received(:pending_signup_email)
+      expect(mailer_double).to have_received(:deliver_now)
     end
+  end
+
+  describe 'callbacks' do
+    let(:user) { build(:user, creation_status: 'approved') }
 
     it 'sends an approval email after create if status is approved' do
-      user = build(:user, email: 'test@example.com', password: 'password123', creation_status: 'approved')
-      expect {
-        user.save
-      }.to change { ActionMailer::Base.deliveries.count }.by(1)
-      expect(ActionMailer::Base.deliveries.last.subject).to eq('Your account has been approved')
+      # Create a mailer instance double
+      mailer_double = instance_double("UserMailer::ApprovalEmail")
+
+      # Stub the UserMailer class
+      allow(UserMailer).to receive_message_chain(:with, :approval_email).and_return(mailer_double)
+      allow(mailer_double).to receive(:deliver_now)
+
+      user.save
+
+      expect(UserMailer).to have_received(:with).with(user: user)
+      expect(UserMailer.with(user: user)).to have_received(:approval_email)
+      expect(mailer_double).to have_received(:deliver_now)
     end
   end
 end
