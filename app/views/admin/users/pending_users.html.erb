@@ -16,12 +16,13 @@
         <td><%= user.email %></td>
         <td><%= user.creation_status %></td>
         <td>
-          <%= form_with url: approve_user_admin_users_path, method: :patch, local: true do |form| %>
+          <%= form_with url: approve_user_admin_user_path(user), method: :put, local: true do |form| %>
             <%= hidden_field_tag :id, user.id %>
             <%= hidden_field_tag :status, 'approved' %>
             <%= submit_tag 'Approve' %>
           <% end %>
         </td>
+        <td><%= button_to 'Delete', admin_user_path(user), method: :delete %></td>
       </tr>
     <% end %>
   </tbody>

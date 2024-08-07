@@ -15,14 +15,14 @@
 
   <tbody>
     <% @users.each do |user| %>
-      <% if user.user_type != 'admin'%>
+      
         <tr>
           <td><%= user.email %></td>
           <td><%= user.user_type %></td>
           <td><%= link_to 'Details', admin_user_path(user) %></td>
           <td><%= button_to 'Delete', admin_user_path(user), method: :delete %></td>
         </tr>
-      <% end %>
+      
     <% end %>
   </tbody>
 </table>

@@ -7,9 +7,11 @@ Rails.application.routes.draw do
   namespace :admin do
     get 'admin/unauthorized', to: 'admin#unauthorized'
     resources :users do
+      member do
+        put :approve_user
+      end
       collection do
-        get 'pending_users'
-        patch 'approve_user'
+        get :pending_users
       end
     end
   end
