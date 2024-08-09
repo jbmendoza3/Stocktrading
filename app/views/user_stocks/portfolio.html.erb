@@ -1,13 +1,17 @@
 <h1>My Portfolio</h1>
 <%= link_to 'Home', trader_home_path %> <br>
 <%= link_to 'Stocks', stocks_path %>
+
+<p>Balance: <%= number_to_currency(current_user.balance) %></p>
+
 <table>
   <thead>
     <tr>
       <th>Name</th>
       <th>Ticker</th>
       <th>Price</th>
-    </tr>
+      <th>Quantity</th>
+      <th>Actions</th>
   </thead>
   <tbody>
     <% @stocks.each do |stock| %>
@@ -15,6 +19,8 @@
         <td><%= stock.name %></td>
         <td><%= stock.ticker %></td>
         <td><%= number_to_currency(stock.price) %></td>
+        <td><%= stock.quantity %></td>
+        <td><%= button_to 'Buy' %><%= button_to 'Sell' %></td>
       </tr>
     <% end %>
   </tbody>

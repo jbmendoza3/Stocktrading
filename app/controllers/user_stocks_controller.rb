@@ -17,6 +17,11 @@ class UserStocksController < ApplicationController
     @stocks = current_user.stocks
   end
 
+  def buy
+    stock = Stock.find(params[:stock_id])
+    
+  end
+
   private
 
   def check_pending_approval
