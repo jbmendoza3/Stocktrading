@@ -26,6 +26,8 @@ Rails.application.routes.draw do
   resources :user_stocks, only: [:create] do
     collection do
       get 'portfolio'
+      post 'buy'
+      post 'sell'
     end
   end
 
