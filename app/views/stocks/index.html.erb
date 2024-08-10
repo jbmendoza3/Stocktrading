@@ -18,7 +18,9 @@
         <td><%= stock.ticker %></td>
         <td><%= number_to_currency(stock.price) %></td>
         <td>
-          <%= button_to 'Add to Portfolio', user_stocks_path(stock_id: stock.id), method: :post, class: 'btn btn-primary' %>
+          <% unless current_user.stocks.include?(stock) %>
+            <%= button_to 'Add to Portfolio', user_stocks_path(stock_id: stock.id), method: :post, class: 'btn btn-primary' %>
+          <% end %>
         </td>
       </tr>
     <% end %>

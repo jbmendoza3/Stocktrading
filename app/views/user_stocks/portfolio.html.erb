@@ -1,4 +1,13 @@
 <h1>My Portfolio</h1>
+<h4><%= current_user.email %></h4>
+<%= link_to 'Home', trader_home_path %> <br>
+<%= link_to 'Stocks', stocks_path %>
+
+<p>Balance: <%= number_to_currency(current_user.balance) %></p>
+
+<% if notice %>
+    <p class="notice"><%= notice %></p>
+<% end %>
 
 <table>
   <thead>
@@ -6,18 +15,23 @@
       <th>Name</th>
       <th>Ticker</th>
       <th>Price</th>
+      <th>Quantity</th>
+      <th>Actions</th>
     </tr>
   </thead>
   <tbody>
     <% @stocks.each do |stock| %>
+      <% user_stock = current_user.user_stocks.find_by(stock: stock) %>
       <tr>
         <td><%= stock.name %></td>
         <td><%= stock.ticker %></td>
         <td><%= number_to_currency(stock.price) %></td>
+        <td><%= user_stock.quantity %></td>
+        <td>
+          <%= button_to 'Buy', buy_user_stocks_path(stock_id: stock.id), method: :post %>
+          <%= button_to 'Sell', sell_user_stocks_path(stock_id: stock.id), method: :post %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<%= link_to 'Home', trader_home_path %>
-<%= link_to 'Stocks', stocks_path %>

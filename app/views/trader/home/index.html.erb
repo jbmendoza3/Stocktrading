@@ -2,8 +2,8 @@
     <%= button_to 'Logout', destroy_user_session_path, method: :delete %>
   <% end %>
 
-<h1>Welcome to the Trader Home Page My Friend!</h1>
-<%= link_to 'My Portfolio', portfolio_user_stocks_path %>
+<h1>Welcome to the Trader Home Page, <%= current_user.email %></h1>
+<%= link_to 'My Portfolio', portfolio_user_stocks_path %> <br>
 <%= link_to 'Stocks', stocks_path %>
 
 
