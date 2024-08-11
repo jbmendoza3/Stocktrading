@@ -1,5 +1,6 @@
 <h1>Welcome Admin!</h1>
 
+<%= button_to 'Logout', destroy_user_session_path, method: :delete %>
 
 <h2>Users</h2>
 <%= link_to 'New User', new_admin_user_path %><br>
@@ -27,5 +28,30 @@
   </tbody>
 </table>
 
-<%= button_to 'Logout', destroy_user_session_path, method: :delete %>
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>User</th>
+      <th>Stock</th>
+      <th>Type</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transactions.each do |transaction| %>
+      <tr>
+        <td><%= transaction.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= transaction.user.email %></td>
+        <td><%= transaction.stock.name %></td>
+        <td><%= transaction.transaction_type.capitalize %></td>
+        <td><%= transaction.quantity %></td>
+        <td><%= number_to_currency(transaction.price) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
 

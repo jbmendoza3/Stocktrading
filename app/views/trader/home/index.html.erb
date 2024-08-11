@@ -3,8 +3,36 @@
   <% end %>
 
 <h1>Welcome to the Trader Home Page, <%= current_user.email %></h1>
+
 <%= link_to 'My Portfolio', portfolio_user_stocks_path %> <br>
 <%= link_to 'Stocks', stocks_path %>
+
+<h1>Transaction History</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Stock</th>
+      <th>Type</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% current_user.transactions.each do |transaction| %>
+      <tr>
+        <td><%= transaction.created_at %></td>
+        <td><%= transaction.stock.name %></td>
+        <td><%= transaction.transaction_type.capitalize %></td>
+        <td><%= transaction.quantity %></td>
+        <td><%= number_to_currency(transaction.price) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
 
 
 
