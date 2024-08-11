@@ -22,10 +22,21 @@ class UserStocksController < ApplicationController
     user_stock = current_user.user_stocks.find_or_initialize_by(stock: stock)
 
     if stock.price <= current_user.balance
-      current_user.balance -= stock.price
-      user_stock.quantity += 1
-      user_stock.save
-      current_user.save
+      ActiveRecord::Base.transaction do
+        current_user.balance -= stock.price
+        user_stock.quantity += 1
+        user_stock.save!
+        current_user.save!
+
+        Transaction.create!(
+          user: current_user,
+          stock: stock,
+          transaction_type: 'buy',
+          quantity: 1,
+          price: stock.price
+        )
+      end
+
       redirect_to portfolio_user_stocks_path, notice: "Successfully bought 1 share of #{stock.name}."
     else
       redirect_to portfolio_user_stocks_path, notice: "You don't have enough balance to buy this stock."
@@ -37,13 +48,24 @@ class UserStocksController < ApplicationController
     user_stock = current_user.user_stocks.find_by(stock: stock)
     
     if user_stock && user_stock.quantity > 0
-      current_user.balance += stock.price
-      user_stock.quantity -= 1
-      user_stock.save
-      current_user.save
+      ActiveRecord::Base.transaction do
+        current_user.balance += stock.price
+        user_stock.quantity -= 1
+        user_stock.save
+        current_user.save
+
+        Transaction.create!(
+          user: current_user,
+          stock: stock,
+          transaction_type: 'sell',
+          quantity: 1,
+          price: stock.price
+        )
+      end
+
       redirect_to portfolio_user_stocks_path, notice: "Successfully sold 1 share of #{stock.name}."
     else
-      redirect_to portfolio_user_stocks_path, alert: "You don't have any shares of #{stock.name} to sell."
+      redirect_to portfolio_user_stocks_path, notice: "You don't have any shares of #{stock.name} to sell."
     end
   end
 

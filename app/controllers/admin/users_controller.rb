@@ -5,6 +5,8 @@ class Admin::UsersController < ApplicationController
   
   def index
     @users = User.where(creation_status: 'approved').where.not(user_type: 'admin')
+
+    @transactions = Transaction.includes(:user, :stock).order(created_at: :desc)
   end
 
   def show
