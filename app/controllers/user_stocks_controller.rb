@@ -20,11 +20,13 @@ class UserStocksController < ApplicationController
   def buy
     stock = Stock.find(params[:stock_id])
     user_stock = current_user.user_stocks.find_or_initialize_by(stock: stock)
+    quantity = params[:quantity].to_i
+    total_price = stock.price * quantity
 
-    if stock.price <= current_user.balance
+    if total_price <= current_user.balance
       ActiveRecord::Base.transaction do
-        current_user.balance -= stock.price
-        user_stock.quantity += 1
+        current_user.balance -= total_price
+        user_stock.quantity += quantity
         user_stock.save!
         current_user.save!
 
@@ -32,43 +34,44 @@ class UserStocksController < ApplicationController
           user: current_user,
           stock: stock,
           transaction_type: 'buy',
-          quantity: 1,
-          price: stock.price
+          quantity: quantity,
+          price: total_price
         )
       end
 
-      redirect_to portfolio_user_stocks_path, notice: "Successfully bought 1 share of #{stock.name}."
+      redirect_to portfolio_user_stocks_path, notice: "Successfully bought #{quantity} shares of #{stock.name}."
     else
-      redirect_to portfolio_user_stocks_path, notice: "You don't have enough balance to buy this stock."
+      redirect_to portfolio_user_stocks_path, notice: "You don't have enough balance to buy #{quantity} shares of #{stock.name}."
     end
   end
 
   def sell
     stock = Stock.find(params[:stock_id])
     user_stock = current_user.user_stocks.find_by(stock: stock)
-    
-    if user_stock && user_stock.quantity > 0
+    quantity = params[:quantity].to_i
+    total_price = stock.price * quantity
+  
+    if user_stock && user_stock.quantity >= quantity
       ActiveRecord::Base.transaction do
-        current_user.balance += stock.price
-        user_stock.quantity -= 1
-        user_stock.save
-        current_user.save
-
+        current_user.balance += total_price
+        user_stock.quantity -= quantity
+        user_stock.save!
+        current_user.save!
+  
         Transaction.create!(
           user: current_user,
           stock: stock,
           transaction_type: 'sell',
-          quantity: 1,
-          price: stock.price
+          quantity: quantity,
+          price: total_price
         )
       end
-
-      redirect_to portfolio_user_stocks_path, notice: "Successfully sold 1 share of #{stock.name}."
+  
+      redirect_to portfolio_user_stocks_path, notice: "Successfully sold #{quantity} shares of #{stock.name}."
     else
-      redirect_to portfolio_user_stocks_path, notice: "You don't have any shares of #{stock.name} to sell."
+      redirect_to portfolio_user_stocks_path, notice: "You don't have enough shares of #{stock.name} to sell #{quantity}."
     end
   end
-
 
   private
 
