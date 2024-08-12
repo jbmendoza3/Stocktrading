@@ -3,7 +3,7 @@
 <%= link_to 'Home', trader_home_path %> <br>
 <%= link_to 'Stocks', stocks_path %>
 
-<p>Balance: <%= number_to_currency(current_user.balance) %></p>
+<p>Current Balance: <%= number_to_currency(current_user.balance) %></p>
 
 <% if notice %>
     <p class="notice"><%= notice %></p>
@@ -28,8 +28,15 @@
         <td><%= number_to_currency(stock.price) %></td>
         <td><%= user_stock.quantity %></td>
         <td>
-          <%= button_to 'Buy', buy_user_stocks_path(stock_id: stock.id), method: :post %>
-          <%= button_to 'Sell', sell_user_stocks_path(stock_id: stock.id), method: :post %>
+          <%= form_with url: buy_user_stocks_path(stock_id: stock.id), method: :post, local: true do |form| %>
+            <%= form.number_field :quantity, value: 1, min: 1 %>
+            <%= form.submit 'Buy' %>
+          <% end %>
+
+          <%= form_with url: sell_user_stocks_path(stock_id: stock.id), method: :post, local: true do |form| %>
+            <%= form.number_field :quantity, value: 1, min: 1, max: user_stock ? user_stock.quantity : 0 %>
+            <%= form.submit 'Sell' %>
+          <% end %>
         </td>
       </tr>
     <% end %>
